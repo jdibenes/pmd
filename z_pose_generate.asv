@@ -26,8 +26,7 @@ id_o = 3:7;
 
 cr1 = math_crossratio_1D(P2_x(id_o(1)), P2_x(id_o(2)), P2_x(id_o(3)), P2_x(id_o(4)));
 cr2 = math_crossratio_1D(P2_x(id_o(2)), P2_x(id_o(3)), P2_x(id_o(4)), P2_x(id_o(5)));
-cr1_v = math_crossratio_1D(P2_x(id_v(1)), P2_x(id_v(2)), P2_x(id_v(3)), P2_x(id_v(4)));
-cr2_v = math_crossratio_1D(P2_x(id_v(2)), P2_x(id_v(3)), P2_x(id_v(4)), P2_x(id_v(5)));
+cr1_v = math_crossratio_1D(P2_x(id
 
 P2_y = 2.5;
 P1_y = 0;
@@ -96,12 +95,10 @@ p9 = p(:, 9);
 ho = cross(l1, l3);
 ho = ho / ho(3);
 
-[l1_v, l2_v, l3_v] = pmd_conic_lines(p1, pa, pc, pe, p9, cr1_v, cr2_v);
-hv = cross(l1_v, l3_v);
-hv = hv / hv(3);
+[l1_v, l2_v, l3_v] = pmd_conic_lines(p1, pa, pc, pe, p9, 
 
 cra = math_crossratio_2DH(pa, pb, pc, pd, ho);
-crb = math_crossratio_2DH(pb, pa, pc, pe, hv);
+crb = math_crossratio_2DH(pb, pa, pc, pe, ho); 
 cre = math_crossratio_2DH(pe, pd, pc, pb, ho);
 
 da = pat_o_cr_to_d(P2_x(2), P2_x(3), P2_x(5), P2_x(7), cra);
