@@ -37,6 +37,7 @@ row1 = 1;
 row2 = 400;
 
 error_R_ang = zeros(N, 5);
+error_R_abs = zeros(N, 5);
 error_t_abs = zeros(N, 5);
 error_t_rel = zeros(N, 5);
 error_t_ang = zeros(N, 5);
@@ -92,23 +93,20 @@ indices_8 = [3, 5, 6, 7, 8, 9, 11, 12];
 error_z_neg(k) = (za1 > 0) && (zb1 > 0) && (zc1 > 0) && (zd1 > 0) && (ze1 > 0) && ...
                  (za2 > 0) && (zb2 > 0) && (zc2 > 0) && (zd2 > 0) && (ze2 > 0);
 
-[error_R_ang(k, 1), error_t_abs(k, 1), error_t_rel(k, 1), error_t_ang(k, 1)] = pose_compute_error(R, t, R_6,   t_6);
-[error_R_ang(k, 2), error_t_abs(k, 2), error_t_rel(k, 2), error_t_ang(k, 2)] = pose_compute_error(R, t, R_7,   t_7);
-[error_R_ang(k, 3), error_t_abs(k, 3), error_t_rel(k, 3), error_t_ang(k, 3)] = pose_compute_error(R, t, R_8,   t_8);
-[error_R_ang(k, 4), error_t_abs(k, 4), error_t_rel(k, 4), error_t_ang(k, 4)] = pose_compute_error(R, t, Rb_6,  tb_6);
-[error_R_ang(k, 5), error_t_abs(k, 5), error_t_rel(k, 5), error_t_ang(k, 5)] = pose_compute_error(R, t, Rb_10, tb_10);
+[error_R_ang(k, 1), error_R_abs(k, 1), error_t_abs(k, 1), error_t_rel(k, 1), error_t_ang(k, 1)] = pose_compute_error(R, t, R_6,   t_6);
+[error_R_ang(k, 2), error_R_abs(k, 2), error_t_abs(k, 2), error_t_rel(k, 2), error_t_ang(k, 2)] = pose_compute_error(R, t, R_7,   t_7);
+[error_R_ang(k, 3), error_R_abs(k, 3), error_t_abs(k, 3), error_t_rel(k, 3), error_t_ang(k, 3)] = pose_compute_error(R, t, R_8,   t_8);
+[error_R_ang(k, 4), error_R_abs(k, 4), error_t_abs(k, 4), error_t_rel(k, 4), error_t_ang(k, 4)] = pose_compute_error(R, t, Rb_6,  tb_6);
+[error_R_ang(k, 5), error_R_abs(k, 5), error_t_abs(k, 5), error_t_rel(k, 5), error_t_ang(k, 5)] = pose_compute_error(R, t, Rb_10, tb_10);
 end
 
-save(['results_' name '_' num2str(N) '_' num2str(lines) '.mat'], 'error_z_neg', 'error_R_ang', 'error_t_abs', 'error_t_rel', 'error_t_ang');
+save(['results_' name '_' num2str(N) '_' num2str(lines) '.mat'], 'error_z_neg', 'error_R_ang', 'error_R_abs', 'error_t_abs', 'error_t_rel', 'error_t_ang');
 
-function [e_r_ang, e_t_abs, e_t_rel, e_t_ang] = pose_compute_error(R_gt, t_gt, R, t)
-cos_o = (trace(R \ R_gt)-1) / 2;
-%sin_o = sqrt(max([1 - cos_o^2, 0]));
-e_r_ang = cos_o; %min(abs([atan2(sin_o, cos_o), atan2(-sin_o, cos_o)]));
-
-%e_r_ang = rad2deg(norm(acos((trace(R.'*R_gt)-1) / 2)));
+function [e_r_ang, e_r_abs, e_t_abs, e_t_rel, e_t_ang] = pose_compute_error(R_gt, t_gt, R, t)
+e_r_qua = quatmultiply(rotm2quat(R), quatconj(rotm2quat(R_gt)));
+e_r_ang = 2*atan2(norm(e_r_qua(2:4)), e_r_qua(1));
+e_r_abs = norm(R - R_gt, 'fro');
 e_t_abs = norm(t - t_gt);
 e_t_rel = (e_t_abs / norm(t_gt))*100;
-%e_t_ang = acosd(dot(t/norm(t), t_gt/norm(t_gt)));
 e_t_ang = abs(atan2(norm(cross(t, t_gt)), dot(t, t_gt)));
 end
