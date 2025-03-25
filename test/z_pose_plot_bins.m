@@ -67,7 +67,7 @@ plot(xdata, counts_8_R);
 plot(xdata, counts_b_6_R);
 plot(xdata, counts_b_10_R);
 set(gca, "XScale", "log");
-legend({'6-pt (ours)', '7-pt (ours)', '8-pt (ours)', '6-pt [2]', '10-pt [2]'});
+legend({'6-pt (ours)', '7-pt (ours)', '8-pt (ours)', '6-pt [5]', '10-pt [5]'});
 xlabel('Orientation error (degrees)')
 ylabel('Relative frequency')
 ylim([0, 0.12]);
@@ -80,21 +80,7 @@ plot(xdata, counts_8_t);
 plot(xdata, counts_b_6_t);
 plot(xdata, counts_b_10_t);
 set(gca, "XScale", "log");
-legend({'6-pt (ours)', '7-pt (ours)', '8-pt (ours)', '6-pt [2]', '10-pt [2]'});
+legend({'6-pt (ours)', '7-pt (ours)', '8-pt (ours)', '6-pt [5]', '10-pt [5]'});
 xlabel('Translation error (%)')
 ylabel('Relative frequency')
 ylim([0, 0.12]);
-
-
-
-%a = histcounts(, bins);
-
-%{
-1.1364e-11 0.0162
-1.0045e-11 0.0038
-1.6649e-11 0.0049
-1.9597e-16 8.4349e-10
-2.3338e-16 1.5086e-10
-%}
-
-%
